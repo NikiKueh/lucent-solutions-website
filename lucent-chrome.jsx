@@ -156,8 +156,8 @@ function CTASection({
   title = "Bereit für Software,",
   titleLine2 = "die",
   titleEm = "wirkt?",
-  body = "Schreib uns kurz, woran ihr arbeitet. Innerhalb eines Werktags bekommt ihr eine Antwort — mit einer These, wie wir die Sache angehen würden.",
-  primaryLabel = "Projekt starten",
+  body = "Schreib uns kurz, woran ihr arbeitet. Innerhalb eines Werktags bekommt ihr eine ehrliche Einschätzung — kostenlos, unverbindlich, konkret.",
+  primaryLabel = "Projekt anfragen",
   primaryHref = "contact.html",
   ghostLabel = "$ termin buchen",
   ghostHref = "contact.html#termin",
@@ -167,13 +167,34 @@ function CTASection({
       <div className="wrap">
         <Reveal>
           <div className="kontakt">
+            <div className="kontakt-glow-orb" />
             <div className="kontakt-grid">
-              <div>
-                <span className="section-eyebrow" style={{ color: "var(--gold)" }}>{eyebrow}</span>
-                <h2 style={{ marginTop: 16 }}>
+
+              {/* LEFT — copy + trust + CTAs */}
+              <div className="kontakt-copy">
+                <span className="section-eyebrow cta-eyebrow">{eyebrow}</span>
+                <h2 className="cta-h2">
                   {title}<br />{titleLine2} <em>{titleEm}</em>
                 </h2>
-                <p>{body}</p>
+                <p className="cta-body">{body}</p>
+
+                <div className="cta-trust">
+                  <div className="cta-trust-item">
+                    <span className="cta-trust-num">24h</span>
+                    <span className="cta-trust-lab">Erste Rückmeldung</span>
+                  </div>
+                  <div className="cta-trust-div" />
+                  <div className="cta-trust-item">
+                    <span className="cta-trust-num">15+</span>
+                    <span className="cta-trust-lab">Projekte gebaut</span>
+                  </div>
+                  <div className="cta-trust-div" />
+                  <div className="cta-trust-item">
+                    <span className="cta-trust-num">0 €</span>
+                    <span className="cta-trust-lab">Ersteinschätzung</span>
+                  </div>
+                </div>
+
                 <div className="kontakt-row">
                   <Magnetic>
                     <a href={primaryHref} className="btn btn-primary">
@@ -187,18 +208,58 @@ function CTASection({
                   </Magnetic>
                 </div>
               </div>
-              <div className="contact-card">
-                <div className="head">
-                  <span>kontakt.json</span>
-                  <span>● online</span>
+
+              {/* RIGHT — premium contact stage */}
+              <div className="contact-stage">
+                <div className="cs-header">
+                  <div>
+                    <div className="cs-studio-name">Lucent Solutions</div>
+                    <div className="cs-studio-sub">Software Studio · Ulm</div>
+                  </div>
+                  <div className="cs-status">
+                    <span className="cs-status-dot" />
+                    Q2 / 26 offen
+                  </div>
                 </div>
-                <div className="field"><span className="k">studio</span><span className="v">Lucent GmbH</span></div>
-                <div className="field"><span className="k">stadt</span><span className="v">Ulm · Remote</span></div>
-                <div className="field"><span className="k">email</span><a href="mailto:hallo@lucent.example" className="v link">hallo@lucent.example</a></div>
-                <div className="field"><span className="k">tel</span><span className="v">+49 731 000-000</span></div>
-                <div className="field"><span className="k">stunden</span><span className="v">Mo–Fr · 09–18 Uhr</span></div>
-                <div className="field"><span className="k">status</span><span className="v" style={{ color: "#6ee7a7" }}>● nimmt Q2/26 Projekte</span></div>
+
+                <div className="cs-fields">
+                  <div className="cs-field">
+                    <span className="cs-k">E-Mail</span>
+                    <a href="mailto:hallo@lucent.example" className="cs-v cs-link">hallo@lucent.example</a>
+                  </div>
+                  <div className="cs-field">
+                    <span className="cs-k">Telefon</span>
+                    <span className="cs-v">+49 731 000-000</span>
+                  </div>
+                  <div className="cs-field">
+                    <span className="cs-k">Standort</span>
+                    <span className="cs-v">Ulm · Remote-first</span>
+                  </div>
+                  <div className="cs-field">
+                    <span className="cs-k">Erreichbar</span>
+                    <span className="cs-v">Mo – Fr · 09–18 Uhr</span>
+                  </div>
+                </div>
+
+                <div className="cs-next">
+                  <span className="cs-next-label">Wie es weitergeht</span>
+                  <div className="cs-steps">
+                    <div className="cs-step">
+                      <span className="cs-step-n">01</span>
+                      <span className="cs-step-t">Brief schicken — 5 Minuten</span>
+                    </div>
+                    <div className="cs-step">
+                      <span className="cs-step-n">02</span>
+                      <span className="cs-step-t">Discovery-Call · 30 min</span>
+                    </div>
+                    <div className="cs-step">
+                      <span className="cs-step-n">03</span>
+                      <span className="cs-step-t">Konzept & Angebot</span>
+                    </div>
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </Reveal>
