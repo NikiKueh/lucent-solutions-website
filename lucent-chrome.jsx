@@ -74,23 +74,35 @@ function Nav({ current }) {
   return (
     <header className="nav">
       <div className="wrap nav-inner">
+
+        {/* ── Brand ── */}
         <a href="index.html" className="brand" aria-label="Lucent — zur Startseite">
           <span className="mark">L</span>
           <b>Lucent</b>
           <span className="tag">Software Studio</span>
         </a>
-        <nav className="nav-links">
+
+        {/* ── Center nav ── */}
+        <nav className="nav-center">
           {LUCENT_NAV.map((n) => (
             <a key={n.key} href={n.href}
                className={current === n.key ? "current" : ""}>
               <Scramble text={n.label} />
             </a>
           ))}
-          <span className="status"><span className="dot" /> verfügbar Q2/26</span>
-          <a href="contact.html" className="nav-cta">
-            Projekt starten <span className="arrow">→</span>
-          </a>
         </nav>
+
+        {/* ── Right: status + CTA ── */}
+        <div className="nav-actions">
+          <span className="status">
+            <span className="dot" />
+            verfügbar Q2/26
+          </span>
+          <a href="contact.html" className="nav-cta">
+            Projekt anfragen <span className="arrow">→</span>
+          </a>
+        </div>
+
       </div>
     </header>
   );

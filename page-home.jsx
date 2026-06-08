@@ -13,66 +13,92 @@ function HomeHero() {
     { text: "$ lucent deploy --to production", render: (t) => <><span className="term-prompt">$</span>{t.replace("$", "")}</>, pause: 240 },
     { text: "✔ build  ✔ sign  ✔ rollout 100%", render: (t) => <span className="term-ok">{t}</span>, pause: 1400 },
   ], []);
+
   return (
     <section className="hero">
       <div className="wrap hero-grid">
-        <div>
+
+        {/* ── LEFT: editorial copy column ── */}
+        <div className="hero-copy">
+
           <Reveal>
-            <span className="eyebrow">
-              <span className="pill">NEU</span>
-              <span>Software Studio · Ulm · seit 2021</span>
-            </span>
+            <div className="hero-eyebrow">
+              <span className="hero-badge">Software Studio</span>
+              <span className="hero-loc">Ulm · Remote · seit 2021</span>
+            </div>
           </Reveal>
+
           <Reveal delay={80}>
             <h1 className="display">
-              Software, die <em>wirkt.</em><br />
-              Tools, die euer Team<br />
-              <span className="underline-gold">jeden Tag</span> nutzt.
+              Wir bauen <em>Software,</em><br />
+              die euer Team<br />
+              <span className="underline-gold">täglich</span> voranbringt.
             </h1>
           </Reveal>
-          <Reveal delay={160}>
-            <p className="lede">
-              Wir bauen interne Tools, Dashboards, KI-Automatisierungen und SaaS-Plattformen,
-              die manuelle Arbeit ersetzen und eure Systeme verbinden — vom Prototyp
-              bis zur produktiven Plattform.
+
+          <Reveal delay={150}>
+            <p className="hero-kicker">
+              Interne Tools, Dashboards und Automatisierungen —<br />
+              vom Prototyp zur produktiven Plattform, in Wochen.
             </p>
           </Reveal>
-          <Reveal delay={220}>
+
+          <Reveal delay={200}>
+            <div className="hero-capabilities">
+              <span>Custom Tools</span>
+              <span className="hc-sep">·</span>
+              <span>KI-Workflows</span>
+              <span className="hc-sep">·</span>
+              <span>Dashboards</span>
+              <span className="hc-sep">·</span>
+              <span>SaaS-Plattformen</span>
+            </div>
+          </Reveal>
+
+          <Reveal delay={260}>
             <div className="hero-ctas">
               <Magnetic>
                 <a href="contact.html" className="btn btn-primary">
-                  Unverbindliches Gespräch <span className="arrow">→</span>
+                  Projekt anfragen <span className="arrow">→</span>
                 </a>
               </Magnetic>
               <Magnetic strength={8}>
-                <a href="leistungen.html" className="btn btn-ghost btn-mono">
-                  $ alle leistungen
+                <a href="cases.html" className="btn btn-ghost">
+                  Showcase ansehen
                 </a>
               </Magnetic>
             </div>
           </Reveal>
-          <Reveal delay={320}>
+
+          <Reveal delay={360}>
             <div className="hero-trust">
-              <div>
-                <div className="label">Was wir bauen</div>
-                <div className="clients">
-                  <span>Custom Tools</span>
-                  <span>KI-Workflows</span>
-                  <span>Dashboards</span>
-                  <span>Portale</span>
-                </div>
+              <div className="hero-kpi">
+                <div className="stat-val">12+</div>
+                <div className="stat-lab">Projekte im<br />produktiven Einsatz</div>
+              </div>
+              <div className="hero-trust-divider" />
+              <div className="hero-kpi">
+                <div className="stat-val">100%</div>
+                <div className="stat-lab">on-time delivery<br />seit Gründung</div>
+              </div>
+              <div className="hero-trust-divider" />
+              <div className="hero-kpi">
+                <div className="stat-val">∅ 6 W</div>
+                <div className="stat-lab">Kickoff bis<br />erstes Go-live</div>
               </div>
             </div>
           </Reveal>
+
         </div>
 
-        <Reveal delay={240}>
-          <div style={{ position: "relative" }}>
-            <div className="float-chip" style={{ top: -16, left: -20, transform: "rotate(-3deg)" }}>
-              <span style={{ color: "#1cba6e" }}>●</span> deploy.yaml
+        {/* ── RIGHT: visual stage ── */}
+        <Reveal delay={200}>
+          <div className="hero-stage">
+            <div className="float-chip" style={{ top: -18, left: -22, transform: "rotate(-2.5deg)" }}>
+              <span style={{ color: "#1cba6e" }}>●</span> deploy.yaml · prod
             </div>
-            <div className="float-chip" style={{ bottom: -14, right: -12, transform: "rotate(2deg)" }}>
-              <span style={{ color: "var(--gold)" }}>{`{ }`}</span> 312 Endpoints verbunden
+            <div className="float-chip" style={{ bottom: -16, right: -18, transform: "rotate(1.8deg)" }}>
+              <span style={{ color: "var(--gold)" }}>✦</span> 312 Endpoints · live
             </div>
             <div className="terminal">
               <div className="term-bar">
@@ -90,6 +116,7 @@ function HomeHero() {
             </div>
           </div>
         </Reveal>
+
       </div>
     </section>
   );
