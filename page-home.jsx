@@ -492,20 +492,23 @@ function HomeProcess() {
       <div className="wrap">
         <div className="section-head">
           <Reveal><span className="section-eyebrow">PROZESS · 07 PHASEN</span></Reveal>
-          <Reveal delay={80}><h2 className="section-title">So <em>arbeiten</em> wir.</h2></Reveal>
-          <Reveal delay={160}><p className="section-sub">Unsere Arbeitsweise ist transparent und vorhersehbar. Sieben Phasen, von Discovery bis Skalierung — vier davon hier kurz angerissen.</p></Reveal>
+          <Reveal delay={80}><h2 className="section-title">Von der Idee zur <em>produktiven</em> Plattform.</h2></Reveal>
+          <Reveal delay={160}><p className="section-sub">Sieben Phasen, klare Gates, ehrliche Zeitrahmen. Von Discovery bis zum Betrieb — jede Phase endet mit Deliverables und einem gemeinsamen Abnahmekriterium.</p></Reveal>
         </div>
         <div className="prozess-grid">
           <Reveal>
             <div className="prozess-list">
               {steps.map((s) => (
-                <a key={s.slug} className="prozess-step" href={`process.html#${s.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
-                  <span className="n">{s.n}</span>
-                  <div>
-                    <h4>{s.t}</h4>
+                <a key={s.slug} className="prozess-step" href={`process.html#${s.slug}`}>
+                  <div className="prozess-step-num">{s.n}</div>
+                  <div className="prozess-step-body">
+                    <div className="prozess-step-hd">
+                      <h4>{s.t}</h4>
+                      <span className="prozess-step-arr">→</span>
+                    </div>
                     <p>{s.desc}</p>
+                    <span className="prozess-step-badge">{s.time}</span>
                   </div>
-                  <span className="time">{s.time}</span>
                 </a>
               ))}
             </div>
@@ -530,34 +533,49 @@ function ProzessDeploy() {
     const id = setInterval(() => setTick((t) => t + 1), 3200);
     return () => clearInterval(id);
   }, []);
-  const rows = [
-    { l: "discover", v: "2 w" },
-    { l: "prototype", v: "3 w" },
-    { l: "build", v: "8–16 w" },
-    { l: "operate", v: "ongoing" },
+  const phases = [
+    { n: "01", label: "DISCOVER",  dur: "1–2 W",   status: "done",   pct: 100 },
+    { n: "02", label: "PROTOTYPE", dur: "2–3 W",   status: "done",   pct: 100 },
+    { n: "03", label: "BUILD",     dur: "8–16 W",  status: "active", pct: 65  },
+    { n: "04", label: "OPERATE",   dur: "laufend", status: "queued", pct: 0   },
   ];
   return (
-    <div className="prozess-deploy">
-      <div className="head">
-        <span style={{ color: "rgba(245,242,236,0.6)" }}>~/lucent/process</span>
-        <span style={{ color: "#6ee7a7" }}>● aktiv</span>
+    <div className="ps-stage">
+      <div className="ps-header">
+        <span className="ps-title">DELIVERY BOARD</span>
+        <span className="ps-live"><span className="ps-live-dot" />live</span>
       </div>
-      <div style={{ paddingTop: 16, color: "rgba(245,242,236,0.5)", fontSize: 11.5 }}>
-        $ lucent run --phase=all
-      </div>
-      <div className="pipeline">
-        {rows.map((r, i) => (
-          <div className="pipe-row" key={r.l}>
-            <span style={{ color: "rgba(245,242,236,0.7)" }}>{r.l}</span>
-            <div className="bar"><div key={tick + i} style={{ animationDelay: `${i * 0.25}s` }} /></div>
-            <span className="stat">{r.v}</span>
+      <div className="ps-phases">
+        {phases.map((p, i) => (
+          <div className={`ps-phase ps-phase--${p.status}`} key={p.n}>
+            <span className="ps-phase-n">{p.n}</span>
+            <div className="ps-phase-body">
+              <span className="ps-phase-label">{p.label}</span>
+              <div className="ps-phase-bar">
+                {p.pct > 0 && (
+                  <div
+                    className={`ps-phase-fill ps-phase-fill--${p.status}`}
+                    key={tick + i}
+                    style={p.status !== "active" ? { width: `${p.pct}%` } : undefined}
+                  />
+                )}
+              </div>
+            </div>
+            <span className="ps-phase-dur">{p.dur}</span>
+            <span className={`ps-phase-icon ps-phase-icon--${p.status}`}>
+              {p.status === "done" ? "✓" : p.status === "active" ? "↻" : "○"}
+            </span>
           </div>
         ))}
       </div>
-      <div style={{ marginTop: 18, paddingTop: 18, borderTop: "1px solid rgba(255,255,255,0.08)", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, fontSize: 11 }}>
-        <div><div style={{ color: "rgba(245,242,236,0.5)" }}>velocity</div><div style={{ color: "var(--gold)", fontSize: 18, marginTop: 4 }}>4.2 ★</div></div>
-        <div><div style={{ color: "rgba(245,242,236,0.5)" }}>delivery</div><div style={{ color: "var(--gold)", fontSize: 18, marginTop: 4 }}>100%</div></div>
-        <div><div style={{ color: "rgba(245,242,236,0.5)" }}>kpi met</div><div style={{ color: "var(--gold)", fontSize: 18, marginTop: 4 }}>11/12</div></div>
+      <div className="ps-kpis">
+        <div className="ps-kpi"><span className="ps-kpi-lab">velocity</span><span className="ps-kpi-val">4.2 ★</span></div>
+        <div className="ps-kpi"><span className="ps-kpi-lab">delivery</span><span className="ps-kpi-val">100%</span></div>
+        <div className="ps-kpi"><span className="ps-kpi-lab">kpi met</span><span className="ps-kpi-val">11/12</span></div>
+      </div>
+      <div className="ps-deploy-line">
+        <span className="ps-cmd">$ lucent deploy --to production</span>
+        <span className="ps-ok">✔ build · ✔ sign · ✔ rollout 100%</span>
       </div>
     </div>
   );
