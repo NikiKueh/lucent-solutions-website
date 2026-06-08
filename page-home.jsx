@@ -242,30 +242,66 @@ function HomeServices() {
   return (
     <section id="leistungen">
       <div className="wrap">
-        <div className="section-head">
-          <Reveal><span className="section-eyebrow">LEISTUNGEN · 06</span></Reveal>
-          <Reveal delay={80}><h2 className="section-title">Unsere Leistungen als <em>Software Studio.</em></h2></Reveal>
-          <Reveal delay={160}><p className="section-sub">Wir bauen Software-Produkte und übernehmen Verantwortung für sie. Sechs Bereiche, in denen wir täglich liefern.</p></Reveal>
+
+        <div className="section-head svc-intro">
+          <Reveal>
+            <div className="svc-intro-top">
+              <span className="section-eyebrow">LEISTUNGEN</span>
+              <span className="svc-scope">06 Disziplinen · Vollverantwortung</span>
+            </div>
+          </Reveal>
+          <Reveal delay={80}>
+            <h2 className="section-title">
+              Was wir bauen —<br />
+              und wofür wir <em>einstehen.</em>
+            </h2>
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="section-sub">
+              Sechs Bereiche, in denen wir täglich liefern — mit vollständiger
+              Verantwortung vom Kickoff bis zum produktiven Betrieb.
+            </p>
+          </Reveal>
         </div>
+
         <Reveal>
-          <div className="leistungen">
+          <div className="svc-list">
             {LUCENT_SERVICES.map((s) => (
-              <a className="leistung" key={s.slug} href={`leistungen-${s.slug}.html`} style={{ textDecoration: "none", color: "inherit" }}>
-                <div className="num">{s.n} / 06</div>
-                <div className="corner">→</div>
-                <h3>{s.title}</h3>
-                <p>{s.tagline}</p>
-                <div className="tags">{s.tags.slice(0, 3).map((t) => <span key={t}>{t}</span>)}</div>
-                <div className="viz"><ServiceMockup kind={s.vizKind} /></div>
+              <a
+                className="svc-item"
+                key={s.slug}
+                href={`leistungen-${s.slug}.html`}
+              >
+                <span className="svc-n">{s.n}</span>
+
+                <div className="svc-body">
+                  <h3>{s.title}</h3>
+                  <p>{s.tagline}</p>
+                  <div className="svc-chips">
+                    {s.tags.slice(0, 4).map((t) => <span key={t}>{t}</span>)}
+                  </div>
+                </div>
+
+                <div className="svc-panel">
+                  <div className="svc-panel-viz">
+                    <ServiceMockup kind={s.vizKind} />
+                  </div>
+                  <div className="svc-panel-foot">
+                    <span className="svc-budget">{s.meta.budget}</span>
+                    <span className="svc-go">→</span>
+                  </div>
+                </div>
               </a>
             ))}
           </div>
         </Reveal>
+
         <Reveal delay={160}>
-          <div style={{ marginTop: 40, display: "flex", justifyContent: "center" }}>
+          <div style={{ marginTop: 48, display: "flex", justifyContent: "center" }}>
             <a href="leistungen.html" className="btn btn-ghost btn-mono">$ alle leistungen im detail →</a>
           </div>
         </Reveal>
+
       </div>
     </section>
   );
