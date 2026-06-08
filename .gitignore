@@ -1,0 +1,6 @@
+# macOS / editor noise
+.DS_Store
+Thumbs.db
+
+# local runtime noise
+*.log

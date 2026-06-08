@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light only" />
+  <title>Lucent — Software Studio Ulm · Tools, Plattformen & individuelle Software</title>
+  <meta name="description" content="Lucent ist ein Software Studio aus Ulm. Wir entwickeln Tools, Plattformen und individuelle Software für Teams, die schnell, sauber und messbar ausliefern wollen." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles-v2.css" />
+  <style>
+    @media print {
+      @page { size: A4 portrait; margin: 14mm 12mm; }
+      html, body {
+        background: #f5f2ec !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        animation: none !important;
+        transition: none !important;
+      }
+      /* Kill sticky/fixed positioning so nothing repeats per page */
+      .nav, header.nav { position: static !important; backdrop-filter: none !important; background: #f5f2ec !important; }
+      /* Each major section starts on a fresh page; avoid breaks inside cards */
+      section { break-before: page; break-inside: avoid-page; padding-top: 32px !important; padding-bottom: 32px !important; }
+      section:first-of-type { break-before: auto; }
+      .hero, .hero-grid { break-inside: avoid-page; }
+      .case, .leistung, .industry, .warum-point, .step, .faq-item { break-inside: avoid-page; }
+      /* Trim oversized hero/title type for paper */
+      h1.display { font-size: 56px !important; line-height: 1.05 !important; }
+      h2.section-title { font-size: 40px !important; }
+      .lede { font-size: 16px !important; }
+      /* Hide caret/blink */
+      .caret { display: none !important; }
+      /* Make sure floats/absolute chips don't overflow page */
+      .float-chip { box-shadow: none !important; }
+      /* Reveal animations: force visible */
+      .reveal { opacity: 1 !important; transform: none !important; }
+      /* Footer at end */
+      footer { break-before: page; }
+      a { color: inherit !important; text-decoration: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="app-v2.jsx"></script>
+  <script type="text/babel">
+    // Auto-print once fonts and React tree are ready
+    (async () => {
+      try { if (document.fonts && document.fonts.ready) { await document.fonts.ready; } } catch (e) {}
+      // Wait two animation frames so React mount completes
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+      await new Promise(r => setTimeout(r, 600));
+      window.print();
+    })();
+  </script>
+</body>
+</html>
