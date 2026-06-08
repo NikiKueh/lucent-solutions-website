@@ -411,43 +411,74 @@ function HomeWarum() {
 function HomeCases() {
   const featured = LUCENT_CASES.slice(0, 4);
   return (
-    <section id="cases" style={{ background: "var(--cream-2)" }}>
+    <section id="cases" className="home-cases-section">
       <div className="wrap">
-        <div className="section-head">
-          <Reveal><span className="section-eyebrow">CASES · AUSGEWÄHLTE PROJEKTE</span></Reveal>
-          <Reveal delay={80}><h2 className="section-title">Software, die <em>geliefert hat.</em></h2></Reveal>
-          <Reveal delay={160}><p className="section-sub">Eine kleine Auswahl aus den letzten Jahren. NDAs verbieten Klar-Namen — Zahlen dürfen wir zeigen, illustrativ.</p></Reveal>
+
+        {/* ── Editorial intro: copy left, aggregate proof right ── */}
+        <div className="home-cases-intro">
+          <div className="section-head">
+            <Reveal><span className="section-eyebrow">CASES · AUSGEWÄHLTE PROJEKTE</span></Reveal>
+            <Reveal delay={80}><h2 className="section-title">Software, die <em>geliefert hat.</em></h2></Reveal>
+            <Reveal delay={160}><p className="section-sub">Eine kleine Auswahl aus den letzten Jahren. NDAs verbieten Klar-Namen — Zahlen dürfen wir zeigen.</p></Reveal>
+          </div>
+          <Reveal delay={120}>
+            <div className="home-cases-proof">
+              <div className="home-cases-kpi">
+                <div className="home-cases-kpi-val">12+</div>
+                <div className="home-cases-kpi-lab">Projekte im<br />produktiven Einsatz</div>
+              </div>
+              <div className="home-cases-kpi-divider" />
+              <div className="home-cases-kpi">
+                <div className="home-cases-kpi-val">100%</div>
+                <div className="home-cases-kpi-lab">on-time<br />delivery</div>
+              </div>
+            </div>
+          </Reveal>
         </div>
+
+        {/* ── Cases: featured strip + 3-col grid ── */}
         <Reveal>
-          <div className="cases">
-            {featured.map((c) => (
-              <a className="case" key={c.slug} href={`cases-${c.slug}.html`} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
-                <div className="case-head">
-                  <span className="industry-tag">{c.tag}</span>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--gold)" }}>→</span>
-                </div>
-                <h3>{c.title}</h3>
-                <p>{c.short}</p>
-                <div className="case-viz" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div className="home-cases-grid">
+            {featured.map((c, i) => (
+              <a
+                className={`home-case-card${i === 0 ? " home-case-card--featured" : ""}`}
+                key={c.slug}
+                href={`cases-${c.slug}.html`}
+              >
+                <div className="home-case-frame">
                   <CaseHeroMockup kind={c.vizKind} />
                 </div>
-                <div className="metrics">
-                  {c.metrics.slice(0, 2).map((m, j) => (
-                    <div className="metric" key={j}>
-                      <div className="val">{m.val}</div>
-                      <div className="lab">{m.lab}</div>
-                    </div>
-                  ))}
+                <div className="home-case-body">
+                  <div className="home-case-head">
+                    <span className="home-case-tag">{c.tag}</span>
+                    <span className="home-case-ind">{c.industry}</span>
+                  </div>
+                  <h3>{c.title}</h3>
+                  <p>{c.short}</p>
+                  <div className="home-case-metrics">
+                    {c.metrics.slice(0, 2).map((m, j) => (
+                      <div className="home-case-metric" key={j}>
+                        <div className="home-case-metric-val">{m.val}</div>
+                        <div className="home-case-metric-lab">{m.lab}<br /><span className="home-case-metric-note">{m.note}</span></div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="home-case-foot">
+                    <span>Case ansehen</span>
+                    <span className="arrow">→</span>
+                  </div>
                 </div>
               </a>
             ))}
           </div>
         </Reveal>
+
         <Reveal delay={160}>
-          <div style={{ marginTop: 40, display: "flex", justifyContent: "center" }}>
-            <a href="cases.html" className="btn btn-ghost btn-mono">$ alle cases ansehen →</a>
+          <div style={{ marginTop: 52, display: "flex", justifyContent: "center" }}>
+            <a href="cases.html" className="btn home-cases-cta-btn">Alle Cases ansehen <span className="arrow">→</span></a>
           </div>
         </Reveal>
+
       </div>
     </section>
   );

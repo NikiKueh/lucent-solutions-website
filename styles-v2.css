@@ -1416,3 +1416,336 @@ footer ul a:hover { color: var(--gold); }
   .showcase-card,
   .showcase-card--strip { grid-column: span 12; }
 }
+
+/* ============ Home Cases — dark premium proof section ============ */
+
+.home-cases-section {
+  background: var(--ls-bg-deep);
+  position: relative;
+}
+.home-cases-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--ls-border-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ls-border-soft) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.3;
+}
+.home-cases-section .section-eyebrow {
+  color: var(--gold);
+}
+.home-cases-section .section-eyebrow::before {
+  background: var(--gold);
+}
+.home-cases-section h2.section-title {
+  color: var(--ls-text-primary);
+}
+.home-cases-section .section-sub {
+  color: var(--ls-text-secondary);
+  opacity: 1;
+}
+
+/* ── Intro: editorial 2-col layout ── */
+.home-cases-intro {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px 80px;
+  align-items: end;
+  margin-bottom: 72px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--ls-border-soft);
+  position: relative;
+  z-index: 1;
+}
+.home-cases-intro .section-head {
+  margin-bottom: 0;
+}
+
+/* Aggregate proof stats (right column of intro) */
+.home-cases-proof {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding-bottom: 4px;
+  flex-shrink: 0;
+}
+.home-cases-kpi {
+  text-align: right;
+}
+.home-cases-kpi-val {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ls-text-primary);
+}
+.home-cases-kpi-lab {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ls-text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.55;
+  margin-top: 9px;
+}
+.home-cases-kpi-divider {
+  width: 1px;
+  height: 54px;
+  background: var(--ls-border-medium);
+  flex-shrink: 0;
+}
+
+/* ── 12-col case grid ── */
+.home-cases-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Base case card (glass panel on dark) ── */
+.home-case-card {
+  grid-column: span 4;
+  background: var(--ls-glass);
+  border: 1px solid var(--ls-border-soft);
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+.home-case-card:hover {
+  border-color: var(--ls-border-medium);
+  background: var(--ls-glass-strong);
+  transform: translateY(-5px);
+  box-shadow:
+    0 40px 80px -28px rgba(0, 0, 0, 0.72),
+    0 0 0 1px rgba(248, 247, 243, 0.04) inset;
+}
+
+/* ── Featured card: first case, full-width horizontal ── */
+.home-case-card--featured {
+  grid-column: span 12;
+  flex-direction: row;
+  min-height: 300px;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--ls-border-medium);
+}
+.home-case-card--featured:hover {
+  background: rgba(255, 255, 255, 0.065);
+  box-shadow:
+    0 48px 96px -32px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(248, 247, 243, 0.06) inset;
+}
+.home-case-card--featured .home-case-frame {
+  flex: 0 0 44%;
+  height: auto;
+  min-height: 300px;
+  border-bottom: none;
+  border-right: 1px solid var(--ls-border-soft);
+}
+.home-case-card--featured .home-case-body {
+  justify-content: center;
+  padding: 48px 56px;
+}
+.home-case-card--featured h3 {
+  font-size: 30px;
+}
+.home-case-card--featured .home-case-metric-val {
+  font-size: 38px;
+}
+
+/* ── Mockup frame ── */
+.home-case-frame {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--ls-border-soft);
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0;
+}
+.home-case-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212, 168, 87, 0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* ── Card body ── */
+.home-case-body {
+  padding: 28px 32px 32px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-case-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.home-case-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.home-case-ind {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ls-text-muted);
+  letter-spacing: 0.06em;
+}
+
+.home-case-card h3 {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-top: 16px;
+  color: var(--ls-text-primary);
+  text-wrap: pretty;
+}
+.home-case-card > .home-case-body > p,
+.home-case-card p {
+  font-size: 14px;
+  color: var(--ls-text-secondary);
+  line-height: 1.6;
+  margin-top: 10px;
+  flex: 1;
+  text-wrap: pretty;
+}
+
+/* ── Metrics — the proof row ── */
+.home-case-metrics {
+  display: flex;
+  gap: 36px;
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--ls-border-soft);
+  flex-wrap: wrap;
+  transition: border-color 0.28s;
+}
+.home-case-card:hover .home-case-metrics {
+  border-top-color: var(--ls-border-medium);
+}
+.home-case-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.home-case-metric-val {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 34px;
+  letter-spacing: -0.03em;
+  color: var(--ls-text-primary);
+  line-height: 1;
+}
+.home-case-metric-lab {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ls-text-muted);
+  letter-spacing: 0.06em;
+  line-height: 1.45;
+}
+.home-case-metric-note {
+  color: var(--ls-text-muted);
+  opacity: 0.65;
+}
+
+/* ── Foot / CTA row ── */
+.home-case-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ls-border-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ls-text-muted);
+  transition: border-color 0.22s, color 0.22s;
+}
+.home-case-foot .arrow {
+  transition: transform 0.2s, color 0.2s;
+}
+.home-case-card:hover .home-case-foot {
+  border-top-color: var(--ls-border-medium);
+  color: var(--ls-text-secondary);
+}
+.home-case-card:hover .home-case-foot .arrow {
+  transform: translateX(4px);
+  color: var(--gold);
+}
+
+/* ── Section-level CTA button (dark context) ── */
+.home-cases-cta-btn {
+  border: 1px solid var(--ls-border-medium);
+  color: var(--ls-text-secondary);
+  border-radius: 999px;
+  padding: 13px 28px;
+  font-size: 14px;
+  font-weight: 400;
+  position: relative;
+  z-index: 1;
+  transition: border-color 0.22s, background 0.22s, color 0.22s, transform 0.2s;
+}
+.home-cases-cta-btn:hover {
+  border-color: rgba(248, 247, 243, 0.35);
+  background: var(--ls-glass);
+  color: var(--ls-text-primary);
+  transform: translateY(-1px);
+}
+.home-cases-cta-btn .arrow {
+  transition: transform 0.2s;
+}
+.home-cases-cta-btn:hover .arrow {
+  transform: translateX(3px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .home-case-card--featured {
+    flex-direction: column;
+    min-height: auto;
+  }
+  .home-case-card--featured .home-case-frame {
+    height: 220px;
+    min-height: 220px;
+    flex: 0 0 auto;
+    border-right: none;
+    border-bottom: 1px solid var(--ls-border-soft);
+  }
+  .home-case-card--featured .home-case-body {
+    padding: 28px 32px 32px;
+  }
+  .home-case-card--featured h3 { font-size: 24px; }
+  .home-case-card--featured .home-case-metric-val { font-size: 32px; }
+}
+@media (max-width: 960px) {
+  .home-cases-intro { grid-template-columns: 1fr; gap: 32px; }
+  .home-cases-proof { justify-content: flex-start; }
+  .home-case-card { grid-column: span 6; }
+}
+@media (max-width: 600px) {
+  .home-case-card,
+  .home-case-card--featured { grid-column: span 12; }
+  .home-cases-kpi-val { font-size: 38px; }
+}
