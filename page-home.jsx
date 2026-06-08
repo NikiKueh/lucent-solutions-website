@@ -160,7 +160,7 @@ function TypedTerminal({ lines, speed = 18, startDelay = 200, loop = true }) {
   );
 }
 
-/* ---------- Product examples (NEW concrete examples) ---------- */
+/* ---------- Product examples — premium dark showcase ---------- */
 function ProductExamples() {
   const items = [
     {
@@ -207,23 +207,42 @@ function ProductExamples() {
     },
   ];
   return (
-    <section id="produkte" style={{ background: "var(--cream-2)" }}>
+    <section id="produkte" className="showcase-section">
       <div className="wrap">
-        <div className="section-head">
-          <Reveal><span className="section-eyebrow">PRODUKT-BEISPIELE · 06</span></Reveal>
-          <Reveal delay={80}><h2 className="section-title">Was wir <em>typischerweise</em> bauen.</h2></Reveal>
-          <Reveal delay={160}><p className="section-sub">Keine Generalanbieter-Behauptungen — sechs konkrete Software-Typen, die wir regelmäßig liefern. Jede mit einer realen Anwendung dahinter.</p></Reveal>
+
+        {/* ── Editorial intro: copy left, index aside right ── */}
+        <div className="showcase-intro">
+          <div className="section-head">
+            <Reveal><span className="section-eyebrow">PRODUKT-BEISPIELE</span></Reveal>
+            <Reveal delay={80}><h2 className="section-title">Was wir <em>typischerweise</em> bauen.</h2></Reveal>
+            <Reveal delay={160}><p className="section-sub">Keine Generalanbieter-Behauptungen — sechs konkrete Software-Typen, die wir regelmäßig liefern. Jede mit einer realen Anwendung dahinter.</p></Reveal>
+          </div>
+          <div className="showcase-intro-aside">
+            <Reveal>
+              <span className="showcase-index-label">Beispiele</span>
+              <span className="showcase-index-num">06</span>
+            </Reveal>
+            <Reveal delay={120}>
+              <a href="cases.html" className="showcase-cta-inline">Alle Cases ansehen →</a>
+            </Reveal>
+          </div>
         </div>
+
+        {/* ── Showcase grid: featured (8 col) + standard + strip ── */}
         <Reveal>
-          <div className="products">
+          <div className="showcase-grid">
             {items.map((p, i) => (
-              <a href={p.href} className="product-card" key={i}>
-                <div className="frame">{p.mockup}</div>
-                <div className="body">
-                  <span className="kind">{p.label}</span>
+              <a
+                href={p.href}
+                className={`showcase-card${i === 0 ? " showcase-card--featured" : ""}${i === 5 ? " showcase-card--strip" : ""}`}
+                key={i}
+              >
+                <div className="showcase-frame">{p.mockup}</div>
+                <div className="showcase-body">
+                  <span className="showcase-kind">{p.label}</span>
                   <h3>{p.title}</h3>
                   <p>{p.desc}</p>
-                  <div className="foot">
+                  <div className="showcase-foot">
                     <span>Mehr ansehen</span>
                     <span className="arrow">→</span>
                   </div>
@@ -232,6 +251,7 @@ function ProductExamples() {
             ))}
           </div>
         </Reveal>
+
       </div>
     </section>
   );
