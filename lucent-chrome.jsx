@@ -208,25 +208,64 @@ function CTASection({
 }
 
 /* ---------- FAQ section ---------- */
-function FAQSection({ eyebrow = "FAQ · HÄUFIGE FRAGEN", title = "Häufig gefragt.", subtitle = "Was Stakeholder vor dem ersten Gespräch wissen wollen.", items = LUCENT_FAQS }) {
+function FAQSection({
+  eyebrow = "FAQ · HÄUFIGE FRAGEN",
+  title = "Häufig gefragt.",
+  titleEm = "",
+  subtitle = "Was Stakeholder vor dem ersten Gespräch wissen wollen.",
+  items = LUCENT_FAQS,
+  guide = false,
+  guideHref = "contact.html",
+}) {
+  const [openIdx, setOpenIdx] = useState(null);
   return (
-    <section id="faq">
+    <section id="faq" className="faq-section dark-section">
       <div className="wrap section-narrow">
         <div className="section-head">
           <Reveal><span className="section-eyebrow">{eyebrow}</span></Reveal>
-          <Reveal delay={80}><h2 className="section-title">{title}</h2></Reveal>
+          <Reveal delay={80}>
+            <h2 className="section-title">
+              {title}{titleEm && <> <em>{titleEm}</em></>}
+            </h2>
+          </Reveal>
           {subtitle && <Reveal delay={160}><p className="section-sub">{subtitle}</p></Reveal>}
         </div>
-        <Reveal>
-          <div className="faq-list">
-            {items.map((f, i) => (
-              <details className="faq-item" key={i}>
-                <summary>{f.q}</summary>
-                <div className="a">{f.a}</div>
-              </details>
-            ))}
-          </div>
-        </Reveal>
+        <div className="faq-list">
+          {items.map((f, i) => {
+            const isOpen = openIdx === i;
+            const num = String(i + 1).padStart(2, "0");
+            return (
+              <Reveal key={i} delay={i * 45}>
+                <div className={`faq-item${isOpen ? " faq-item--open" : ""}`}>
+                  <button
+                    className="faq-summary"
+                    onClick={() => setOpenIdx(isOpen ? null : i)}
+                    aria-expanded={isOpen}
+                  >
+                    <span className="faq-num">{num}</span>
+                    <span className="faq-q">{f.q}</span>
+                    <span className="faq-icon">{isOpen ? "−" : "+"}</span>
+                  </button>
+                  <div className="faq-body">
+                    <div className="faq-body-inner">
+                      <p className="faq-answer">{f.a}</p>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+        {guide && (
+          <Reveal delay={200}>
+            <div className="faq-guide">
+              <p className="faq-guide-text">Offene Fragen beantwortet ein Erstgespräch in 30 Minuten.</p>
+              <a href={guideHref} className="faq-guide-link">
+                Termin anfragen <span className="arrow">→</span>
+              </a>
+            </div>
+          </Reveal>
+        )}
       </div>
     </section>
   );
