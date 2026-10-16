@@ -1,27 +1,501 @@
 <!doctype html>
 <html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="color-scheme" content="light only" />
-  <title>Lucent — Software Studio Ulm · Tools, Plattformen & individuelle Software</title>
-  <meta name="description" content="Lucent ist ein Software Studio aus Ulm. Wir bauen interne Tools, Dashboards, KI-Automatisierungen, Kundenportale und SaaS-Plattformen — vom Prototyp bis zum produktiven System." />
-  <meta property="og:title" content="Lucent — Software Studio Ulm" />
-  <meta property="og:description" content="Custom Software, KI-Automatisierung, Dashboards, Integrationen, Kundenportale und SaaS — gebaut von einem kleinen Senior-Team." />
-  <meta property="og:type" content="website" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles-v2.css" />
-</head>
-<body data-page="home">
-  <div id="root"></div>
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-  <script type="text/babel" src="lucent-data.jsx"></script>
-  <script type="text/babel" src="lucent-chrome.jsx"></script>
-  <script type="text/babel" src="lucent-mockups.jsx"></script>
-  <script type="text/babel" src="page-home.jsx"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lucent Solutions — Software, Automatisierung &amp; KI</title>
+    <meta
+      name="description"
+      content="Lucent Solutions entwickelt Softwareprodukte, automatisiert Geschäftsprozesse und realisiert KI-Projekte – präzise, skalierbar und DSGVO-konform."
+    />
+    <meta name="theme-color" content="#030308" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Lucent Solutions — Software, Automatisierung & KI" />
+    <meta
+      property="og:description"
+      content="Softwareprodukte, Automatisierung und KI-Projekte. Technologie, die schwerelos wirkt."
+    />
+    <meta property="og:image" content="/media/og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Lucent Solutions",
+        "description": "Softwareprodukte, Automatisierung und KI-Projekte.",
+        "knowsAbout": ["Softwareentwicklung", "Prozessautomatisierung", "Künstliche Intelligenz"]
+      }
+    </script>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+
+  <body class="is-loading">
+    <!-- ───────────── Preloader ───────────── -->
+    <div class="preloader" aria-hidden="true">
+      <div class="preloader__inner">
+        <svg class="preloader__logo" viewBox="0 0 32 32" fill="none">
+          <defs>
+            <linearGradient id="lg-pre" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6cf0ff" /><stop offset=".5" stop-color="#8d7dff" /><stop offset="1" stop-color="#ea7bff" />
+            </linearGradient>
+          </defs>
+          <path d="M16 2.5 27.5 9v14L16 29.5 4.5 23V9Z" stroke="url(#lg-pre)" stroke-width="1.2" />
+          <path d="M16 2.5v27M4.5 9 16 16l11.5-7" stroke="url(#lg-pre)" stroke-width="1.2" opacity=".5" />
+        </svg>
+        <div class="preloader__count mono"><span data-preload-count>000</span></div>
+        <div class="preloader__bar"><i></i></div>
+        <div class="preloader__label mono">Initialisiere Systeme</div>
+      </div>
+    </div>
+
+    <!-- ───────────── Global FX layers ───────────── -->
+    <div class="cursor" aria-hidden="true">
+      <div class="cursor__ring"><span class="cursor__label"></span></div>
+      <div class="cursor__dot"></div>
+    </div>
+    <canvas class="gl" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"><i></i></div>
+
+    <!-- ───────────── Navigation ───────────── -->
+    <header class="nav">
+      <div class="nav__inner">
+        <a href="#top" class="logo" aria-label="Lucent Solutions – zur Startseite">
+          <svg class="logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="lg-nav" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6cf0ff" /><stop offset=".5" stop-color="#8d7dff" /><stop offset="1" stop-color="#ea7bff" />
+              </linearGradient>
+            </defs>
+            <path d="M16 2.5 27.5 9v14L16 29.5 4.5 23V9Z" stroke="url(#lg-nav)" stroke-width="1.8" />
+            <path d="M16 2.5v27M4.5 9 16 16l11.5-7" stroke="url(#lg-nav)" stroke-width="1.8" opacity=".55" />
+          </svg>
+          <span class="logo__word">Lucent<span>Solutions</span></span>
+        </a>
+
+        <nav class="nav__links" aria-label="Hauptnavigation">
+          <a href="#leistungen" data-scramble-hover>Leistungen</a>
+          <a href="#ki" data-scramble-hover>KI</a>
+          <a href="#prozess" data-scramble-hover>Prozess</a>
+          <a href="#ansatz" data-scramble-hover>Ansatz</a>
+        </nav>
+
+        <a href="#kontakt" class="btn btn--sm btn--glass nav__cta" data-magnetic>
+          <span>Projekt starten</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+
+        <button class="nav__burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="menu" id="menu" aria-hidden="true">
+      <nav class="menu__links" aria-label="Mobile Navigation">
+        <a href="#leistungen"><span class="mono">01</span>Leistungen</a>
+        <a href="#ki"><span class="mono">02</span>KI</a>
+        <a href="#prozess"><span class="mono">03</span>Prozess</a>
+        <a href="#ansatz"><span class="mono">04</span>Ansatz</a>
+        <a href="#kontakt"><span class="mono">05</span>Kontakt</a>
+      </nav>
+    </div>
+
+    <main>
+      <!-- ───────────── Hero ───────────── -->
+      <section class="hero" id="top" data-particles="dust">
+        <div class="hero__media" aria-hidden="true">
+          <video
+            class="hero__video"
+            data-src="/media/hero.mp4"
+            data-src-mobile="/media/hero-mobile.mp4"
+            poster="/media/hero.jpg"
+            muted
+            loop
+            playsinline
+            preload="auto"
+          ></video>
+        </div>
+        <div class="hero__vignette" aria-hidden="true"></div>
+
+        <div class="hero__chips" aria-hidden="true">
+          <span class="chip" style="--x: 74%; --y: 13%; --d: -3s">Data Pipelines</span>
+          <span class="chip" style="--x: 86%; --y: 25%; --d: 0s">LLM-Agenten</span>
+          <span class="chip" style="--x: 79%; --y: 49%; --d: -2s">Workflow-Automation</span>
+          <span class="chip" style="--x: 71%; --y: 64%; --d: -4s">Cloud-native</span>
+          <span class="chip" style="--x: 84%; --y: 74%; --d: -1s">APIs &amp; Integrationen</span>
+        </div>
+
+        <div class="container hero__inner">
+          <p class="eyebrow" data-hero-eyebrow>
+            <i class="pulse"></i><span data-scramble-text>Software · Automatisierung · Künstliche Intelligenz</span>
+          </p>
+          <h1 class="hero__title" data-hero-title>
+            <span class="hero__line">Technologie,</span>
+            <span class="hero__line">die <em class="grad-text">schwerelos</em></span>
+            <span class="hero__line">wirkt.</span>
+          </h1>
+          <div class="hero__bottom">
+            <p class="hero__lead" data-hero-fade>
+              Lucent Solutions entwickelt Softwareprodukte, automatisiert Prozesse und bringt künstliche Intelligenz in
+              den produktiven Einsatz – präzise, skalierbar und ohne unnötigen Ballast.
+            </p>
+            <div class="hero__ctas" data-hero-fade>
+              <a href="#kontakt" class="btn btn--primary" data-magnetic>
+                <span>Projekt starten</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </a>
+              <a href="#leistungen" class="btn btn--ghost" data-magnetic><span>Leistungen entdecken</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="container hero__hud mono" data-hero-fade>
+          <div class="hud"><span class="hud__k">Status</span><span class="hud__v"><i class="pulse"></i>Systeme online</span></div>
+          <div class="hud"><span class="hud__k">Ortszeit</span><span class="hud__v" data-clock>--:--:--</span></div>
+          <a href="#manifest" class="scroll-cue" aria-label="Weiter scrollen"><span>Scrollen</span><i></i></a>
+          <div class="hud hud--right"><span class="hud__k">Scroll</span><span class="hud__v" data-scroll-pct>000 %</span></div>
+        </div>
+      </section>
+
+      <!-- ───────────── Marquee ───────────── -->
+      <section class="marquee" aria-label="Technologien, mit denen wir arbeiten">
+        <div class="container">
+          <p class="mono marquee__label">// Technologien, mit denen wir bauen</p>
+        </div>
+        <div class="marquee__row" data-marquee="1">
+          <div class="marquee__inner">
+            <span>TypeScript</span><b>✦</b><span>Python</span><b>✦</b><span>React</span><b>✦</b><span>Node.js</span><b>✦</b><span>Next.js</span><b>✦</b><span>Rust</span><b>✦</b><span>PostgreSQL</span><b>✦</b><span>Kubernetes</span><b>✦</b>
+          </div>
+        </div>
+        <div class="marquee__row marquee__row--alt" data-marquee="-1">
+          <div class="marquee__inner">
+            <span>LLMs</span><b>◆</b><span>RAG</span><b>◆</b><span>LangGraph</span><b>◆</b><span>n8n</span><b>◆</b><span>Azure</span><b>◆</b><span>AWS</span><b>◆</b><span>Docker</span><b>◆</b><span>Vector-DBs</span><b>◆</b>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────── Manifest ───────────── -->
+      <section class="manifesto" id="manifest" data-particles="sphere">
+        <div class="container">
+          <p class="section-tag"><span>01</span>Manifest</p>
+          <p class="manifesto__text" data-manifesto>
+            Die beste Technologie fühlt sich nicht schwer an. Sie nimmt Last ab, statt neue zu schaffen. Deshalb bauen
+            wir Software, die Prozesse beschleunigt, Teams entlastet und Unternehmen in eine neue Umlaufbahn bringt.
+          </p>
+        </div>
+      </section>
+
+      <!-- ───────────── Warp (scroll-scrubbed flight) ───────────── -->
+      <section class="warp" aria-label="Idee, Code, Wirkung" data-particles="hidden">
+        <div class="warp__sticky">
+          <canvas class="warp__canvas" aria-hidden="true"></canvas>
+          <div class="warp__fallback" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="warp__shade" aria-hidden="true"></div>
+          <div class="warp__words">
+            <span class="warp__word">Idee.</span>
+            <span class="warp__word">Code.</span>
+            <span class="warp__word"><em class="grad-text">Wirkung.</em></span>
+          </div>
+          <div class="container warp__hud mono" aria-hidden="true">
+            <span>Velocity <b data-warp-velocity>0.00</b> c</span>
+            <span>Sequenz <b data-warp-frame>000</b></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────── Leistungen ───────────── -->
+      <section class="services" id="leistungen" data-particles="hidden">
+        <div class="container section-head">
+          <p class="section-tag"><span>02</span>Leistungen</p>
+          <h2 class="h2" data-split>Drei Disziplinen. <span class="dim">Ein Ziel: Wirkung.</span></h2>
+        </div>
+
+        <div class="container stack">
+          <article class="svc" data-spotlight>
+            <div class="svc__media">
+              <video data-src="/media/software.mp4" poster="/media/software.jpg" muted loop playsinline preload="none"></video>
+            </div>
+            <div class="svc__body">
+              <div class="svc__meta mono"><span>01</span><span>/ Engineering</span></div>
+              <h3 class="svc__title">Software&shy;produkte</h3>
+              <p class="svc__text">
+                Individuelle Plattformen, SaaS-Produkte und interne Tools – von der ersten Architekturskizze bis zum
+                stabilen Betrieb. Performant, sicher und gebaut, um mit Ihrem Unternehmen zu wachsen.
+              </p>
+              <ul class="tags">
+                <li>Web-Apps</li><li>SaaS</li><li>APIs</li><li>Cloud-Architektur</li><li>Mobile</li>
+              </ul>
+              <a href="#kontakt" class="svc__link">Projekt besprechen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+          </article>
+
+          <article class="svc" data-spotlight>
+            <div class="svc__media">
+              <video data-src="/media/automation.mp4" poster="/media/automation.jpg" muted loop playsinline preload="none"></video>
+            </div>
+            <div class="svc__body">
+              <div class="svc__meta mono"><span>02</span><span>/ Automation</span></div>
+              <h3 class="svc__title">Automati&shy;sierung</h3>
+              <p class="svc__text">
+                Wir eliminieren manuelle Routinen: Workflows, Integrationen und Datenpipelines, die rund um die Uhr
+                zuverlässig laufen – und Ihrem Team Zeit für das Wesentliche zurückgeben.
+              </p>
+              <ul class="tags">
+                <li>Workflow-Automation</li><li>Integrationen</li><li>RPA</li><li>Datenpipelines</li>
+              </ul>
+              <a href="#kontakt" class="svc__link">Prozesse automatisieren<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+          </article>
+
+          <article class="svc" data-spotlight>
+            <div class="svc__media">
+              <video data-src="/media/ai.mp4" poster="/media/ai.jpg" muted loop playsinline preload="none"></video>
+            </div>
+            <div class="svc__body">
+              <div class="svc__meta mono"><span>03</span><span>/ Intelligence</span></div>
+              <h3 class="svc__title">KI-Projekte</h3>
+              <p class="svc__text">
+                Von LLM-Agenten über intelligente Suche bis zu Vorhersagemodellen: KI, die messbaren Mehrwert liefert –
+                sicher, nachvollziehbar und DSGVO-konform.
+              </p>
+              <ul class="tags">
+                <li>LLM-Agenten</li><li>RAG</li><li>Computer Vision</li><li>Predictive Analytics</li>
+              </ul>
+              <a href="#ki" class="svc__link">KI-Potenzial entdecken<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ───────────── KI ───────────── -->
+      <section class="ai" id="ki" data-particles="ring">
+        <div class="container ai__grid">
+          <div class="ai__copy">
+            <p class="section-tag"><span>03</span>KI im Einsatz</p>
+            <h2 class="h2" data-split>Agenten, die arbeiten. <span class="dim">Nicht nur antworten.</span></h2>
+            <p class="lead" data-reveal>
+              Wir entwickeln KI-Systeme, die sich nahtlos in Ihre Prozesse einfügen: Sie lesen Dokumente, treffen
+              Entscheidungen nach Ihren Regeln und stoßen Aktionen in Ihren Systemen an – nachvollziehbar, sicher und
+              unter Ihrer Kontrolle.
+            </p>
+            <ul class="checks" data-reveal>
+              <li>LLM-Agenten &amp; Copilots</li>
+              <li>RAG über Unternehmenswissen</li>
+              <li>Dokumenten- &amp; Bildverarbeitung</li>
+              <li>On-Premise oder EU-Cloud</li>
+            </ul>
+          </div>
+
+          <div class="terminal" data-terminal data-spotlight>
+            <div class="terminal__bar">
+              <i></i><i></i><i></i>
+              <span class="mono">demo — lucent-agent</span>
+            </div>
+            <pre class="terminal__body mono" aria-label="Beispielhafte Ausgabe eines KI-Agenten"></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────── Prozess ───────────── -->
+      <section class="process" id="prozess" data-particles="wave">
+        <div class="container process__grid">
+          <div class="process__head">
+            <p class="section-tag"><span>04</span>Prozess</p>
+            <h2 class="h2" data-split>Von der Idee <span class="dim">in den Orbit.</span></h2>
+            <p class="lead" data-reveal>
+              Ein klarer Ablauf, kurze Feedbackschleifen und volle Transparenz – damit aus einer Vision ein System wird,
+              das im Alltag trägt.
+            </p>
+          </div>
+
+          <ol class="steps">
+            <li class="steps__line" aria-hidden="true"><i></i></li>
+            <li class="step">
+              <span class="step__node" aria-hidden="true"></span>
+              <span class="step__num mono">01 — Discovery</span>
+              <h3>Verstehen</h3>
+              <p>Wir analysieren Prozesse, Ziele und Daten und identifizieren die Hebel mit dem größten Impact.</p>
+              <span class="step__meta mono">Workshop · Analyse · Roadmap</span>
+            </li>
+            <li class="step">
+              <span class="step__node" aria-hidden="true"></span>
+              <span class="step__num mono">02 — Design</span>
+              <h3>Entwerfen</h3>
+              <p>Architektur, UX und KI-Konzept – validiert mit klickbaren Prototypen, bevor die erste Zeile Code entsteht.</p>
+              <span class="step__meta mono">Architektur · UX · Prototyp</span>
+            </li>
+            <li class="step">
+              <span class="step__node" aria-hidden="true"></span>
+              <span class="step__num mono">03 — Build</span>
+              <h3>Entwickeln</h3>
+              <p>Agile Entwicklung in kurzen Sprints, mit automatisierten Tests, CI/CD und regelmäßigen Live-Demos.</p>
+              <span class="step__meta mono">Sprints · Tests · CI/CD</span>
+            </li>
+            <li class="step">
+              <span class="step__node" aria-hidden="true"></span>
+              <span class="step__num mono">04 — Launch</span>
+              <h3>Skalieren</h3>
+              <p>Go-live, Monitoring und kontinuierliche Weiterentwicklung – wir bleiben an Bord, wenn es ernst wird.</p>
+              <span class="step__meta mono">Go-live · Monitoring · Support</span>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ───────────── Zahlen ───────────── -->
+      <!-- PLATZHALTER: Kennzahlen bitte mit echten Werten von Lucent Solutions ersetzen -->
+      <section class="stats" data-particles="wave" aria-label="Kennzahlen">
+        <div class="container stats__grid">
+          <div class="stat" data-reveal>
+            <div class="stat__num"><span data-count="4">0</span><small>Wochen</small></div>
+            <p>vom Kick-off bis zum ersten funktionsfähigen Prototyp</p>
+          </div>
+          <div class="stat" data-reveal>
+            <div class="stat__num"><span data-count="24">0</span><small>/7</small></div>
+            <p>laufende Automationen, die nie Feierabend machen</p>
+          </div>
+          <div class="stat" data-reveal>
+            <div class="stat__num"><span data-count="100">0</span><small>%</small></div>
+            <p>DSGVO-konform, mit Hosting in der Europäischen Union</p>
+          </div>
+          <div class="stat" data-reveal>
+            <div class="stat__num"><span data-count="1">0</span><small>Team</small></div>
+            <p>von der Idee über die Entwicklung bis zum Betrieb</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────── Warum Lucent ───────────── -->
+      <section class="why" id="ansatz" data-particles="wave">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-tag"><span>05</span>Warum Lucent</p>
+            <h2 class="h2" data-split>Gebaut für das, <span class="dim">was als Nächstes kommt.</span></h2>
+          </div>
+
+          <div class="bento" data-spotlight-group>
+            <article class="bento__card bento__card--lg" data-spotlight>
+              <div class="viz viz--orbit" aria-hidden="true">
+                <i class="orbit orbit--1"><b></b></i><i class="orbit orbit--2"><b></b></i><i class="orbit orbit--3"><b></b></i>
+                <span class="orbit__core"></span>
+              </div>
+              <div class="bento__body">
+                <h3>Engineering first</h3>
+                <p>Saubere Architektur, getesteter Code, lückenlose Dokumentation. Wir bauen Systeme, die auch in fünf Jahren noch wartbar sind.</p>
+              </div>
+            </article>
+
+            <article class="bento__card" data-spotlight>
+              <div class="viz viz--shield" aria-hidden="true">
+                <svg viewBox="0 0 64 72" fill="none"><path d="M32 3 60 13v20c0 17-12 30-28 36C16 63 4 50 4 33V13Z" stroke="currentColor" stroke-width="1.2" /><path d="m21 36 8 8 15-17" stroke="currentColor" stroke-width="1.6" /></svg>
+                <span class="scan"></span>
+              </div>
+              <div class="bento__body">
+                <h3>Sicherheit &amp; DSGVO</h3>
+                <p>Privacy by Design, Hosting in der EU und klare Datenflüsse – Compliance ist bei uns kein Nachgedanke.</p>
+              </div>
+            </article>
+
+            <article class="bento__card" data-spotlight>
+              <div class="viz viz--radar" aria-hidden="true"><span class="sweep"></span><b style="--a: 40deg; --r: 30%"></b><b style="--a: 160deg; --r: 60%"></b><b style="--a: 260deg; --r: 45%"></b></div>
+              <div class="bento__body">
+                <h3>Alles aus einer Hand</h3>
+                <p>Strategie, UX, Entwicklung und Betrieb. Ein Team, ein Ansprechpartner, keine Reibungsverluste.</p>
+              </div>
+            </article>
+
+            <article class="bento__card" data-spotlight>
+              <div class="viz viz--bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="bento__body">
+                <h3>Messbarer Impact</h3>
+                <p>Wir definieren KPIs vor dem ersten Commit – und messen Erfolg in gesparten Stunden und gewonnenem Umsatz.</p>
+              </div>
+            </article>
+
+            <article class="bento__card" data-spotlight>
+              <div class="viz viz--speed" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="bento__body">
+                <h3>Schnell im Orbit</h3>
+                <p>Kurze Sprints, frühe Demos, echtes Feedback. Erste Ergebnisse in Wochen, nicht in Quartalen.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────── Kontakt / CTA ───────────── -->
+      <section class="cta" id="kontakt" data-particles="dust2">
+        <div class="cta__media" aria-hidden="true">
+          <video data-src="/media/portal.mp4" poster="/media/portal.jpg" muted loop playsinline preload="none"></video>
+        </div>
+        <div class="container cta__inner">
+          <p class="section-tag section-tag--center"><span>06</span>Kontakt</p>
+          <h2 class="cta__title" data-split>Bereit <span class="grad-text">abzuheben?</span></h2>
+          <p class="lead" data-reveal>
+            Erzählen Sie uns von Ihrem Vorhaben. Wir melden uns mit einer ersten Einschätzung – unverbindlich und
+            konkret.
+          </p>
+          <!-- PLATZHALTER: E-Mail-Adresse anpassen -->
+          <div class="cta__actions" data-reveal>
+            <a class="btn btn--primary btn--xl" href="mailto:kontakt@lucent-solutions.de?subject=Projektanfrage" data-magnetic>
+              <span>Projekt starten</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </a>
+            <button class="copy mono" type="button" data-copy="kontakt@lucent-solutions.de">
+              <span class="copy__mail">kontakt@lucent-solutions.de</span>
+              <span class="copy__state" data-label="Kopieren">Kopieren</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ───────────── Footer ───────────── -->
+    <footer class="footer">
+      <div class="container footer__grid">
+        <div class="footer__brand">
+          <a href="#top" class="logo" aria-label="Nach oben">
+            <svg class="logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="lg-foot" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#6cf0ff" /><stop offset=".5" stop-color="#8d7dff" /><stop offset="1" stop-color="#ea7bff" />
+                </linearGradient>
+              </defs>
+              <path d="M16 2.5 27.5 9v14L16 29.5 4.5 23V9Z" stroke="url(#lg-foot)" stroke-width="1.8" />
+              <path d="M16 2.5v27M4.5 9 16 16l11.5-7" stroke="url(#lg-foot)" stroke-width="1.8" opacity=".55" />
+            </svg>
+            <span class="logo__word">Lucent<span>Solutions</span></span>
+          </a>
+          <p>Softwareprodukte, Automatisierung und KI-Projekte für Unternehmen, die weiter wollen.</p>
+        </div>
+        <nav class="footer__col" aria-label="Leistungen">
+          <p class="mono">Leistungen</p>
+          <a href="#leistungen">Softwareprodukte</a>
+          <a href="#leistungen">Automatisierung</a>
+          <a href="#ki">KI-Projekte</a>
+        </nav>
+        <nav class="footer__col" aria-label="Unternehmen">
+          <p class="mono">Unternehmen</p>
+          <a href="#ansatz">Ansatz</a>
+          <a href="#prozess">Prozess</a>
+          <a href="#kontakt">Kontakt</a>
+        </nav>
+        <nav class="footer__col" aria-label="Rechtliches">
+          <p class="mono">Rechtliches</p>
+          <a href="/impressum.html">Impressum</a>
+          <a href="/datenschutz.html">Datenschutz</a>
+        </nav>
+      </div>
+
+      <div class="footer__mega" aria-hidden="true"><span data-mega>LUCENT</span></div>
+
+      <div class="container footer__bottom mono">
+        <span>© <span data-year>2026</span> Lucent Solutions</span>
+        <span class="footer__tag">Mit Präzision entwickelt.</span>
+        <a href="#top" data-scramble-hover>Nach oben ↑</a>
+      </div>
+    </footer>
+  </body>
 </html>

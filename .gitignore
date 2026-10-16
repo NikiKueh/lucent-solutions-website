@@ -1,6 +1,5 @@
-# macOS / editor noise
-.DS_Store
-Thumbs.db
-
-# local runtime noise
+node_modules
+dist
 *.log
+# raw Higgsfield renders (~57 MB) stay local; web-ready versions are in public/media
+media-src/

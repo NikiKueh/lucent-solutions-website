@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Publishes the Vite build (dist/) into the live webroot.
+# On the VPS without CI:  npm ci && npm run build && ./scripts/deploy-live.sh
+
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SOURCE_DIR="${SOURCE_DIR:-$ROOT_DIR/dist}"
 TARGET_DIR="${TARGET_DIR:-/var/www/lucent}"
 BUILD_INFO_FILE="$TARGET_DIR/BUILD_INFO.txt"
 
@@ -10,25 +14,24 @@ if ! command -v rsync >/dev/null 2>&1; then
   exit 1
 fi
 
+if [ ! -f "$SOURCE_DIR/index.html" ]; then
+  echo "No build found in $SOURCE_DIR - run 'npm ci && npm run build' first" >&2
+  exit 1
+fi
+
 mkdir -p "$TARGET_DIR"
 
-rsync -av --delete \
-  --exclude='.git/' \
-  --exclude='.github/' \
-  --exclude='scripts/' \
-  --exclude='README.md' \
-  --exclude='.gitignore' \
-  --exclude='designsystem.md' \
-  "$ROOT_DIR/" "$TARGET_DIR/"
+rsync -av --delete "$SOURCE_DIR/" "$TARGET_DIR/"
 
-commit_sha="$(git -C "$ROOT_DIR" rev-parse --short HEAD 2>/dev/null || echo unknown)"
+commit_sha="${COMMIT_SHA:-$(git -C "$ROOT_DIR" rev-parse HEAD 2>/dev/null || echo unknown)}"
+commit_sha="${commit_sha:0:7}"
 deployed_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
 cat > "$BUILD_INFO_FILE" <<EOF
 commit: $commit_sha
 deployed_at_utc: $deployed_at
 source_repo: NikiKueh/lucent-solutions-website
-source_dir: $ROOT_DIR
+source_dir: $SOURCE_DIR
 target_dir: $TARGET_DIR
 EOF
 
