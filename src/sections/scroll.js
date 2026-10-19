@@ -34,25 +34,23 @@ function initParticleStates(particles) {
 
 function initProgress(lenis) {
   const bar = document.querySelector('.progress i');
-  const pct = document.querySelector('[data-scroll-pct]');
   const update = () => {
     const max = document.documentElement.scrollHeight - innerHeight;
     const p = max > 0 ? Math.min(1, scrollY / max) : 0;
     bar.style.transform = `scaleX(${p})`;
-    if (pct) pct.textContent = `${String(Math.round(p * 100)).padStart(3, '0')} %`;
   };
   lenis ? lenis.on('scroll', update) : addEventListener('scroll', update, { passive: true });
   update();
 }
 
-/* Line-by-line masked reveal for headings (gradient words stay intact). */
+/* Line-by-line masked reveal for headings (emphasized words stay intact). */
 function initHeadings() {
   document.querySelectorAll('[data-split]').forEach((el) => {
     SplitText.create(el, {
       type: 'lines',
       mask: 'lines',
       linesClass: 'split-line-inner',
-      ignore: '.grad-text',
+      ignore: '.accent-text',
       autoSplit: true,
       onSplit: (self) =>
         gsap.from(self.lines, {
@@ -95,10 +93,10 @@ function initHeroExit() {
   const st = { trigger: hero, start: 'top top', end: 'bottom top', scrub: true };
   gsap.to('.hero__inner', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: st });
   gsap.to('.hero__media', { scale: 1.12, opacity: 0.25, ease: 'none', scrollTrigger: { ...st } });
-  gsap.to('.hero__hud, .hero__chips', { opacity: 0, ease: 'none', scrollTrigger: { ...st, end: '30% top' } });
+  gsap.to('.hero__hud', { opacity: 0, ease: 'none', scrollTrigger: { ...st, end: '30% top' } });
 }
 
-/* Sticky cards: the previous card sinks back as the next one slides over it. */
+/* Keep each card readable in full before the next one overlaps it. */
 function initServiceStack() {
   const cards = gsap.utils.toArray('.svc');
   // Sticky elements report their stuck position, so zero-height markers stand in for each card's natural top.
@@ -110,27 +108,26 @@ function initServiceStack() {
     return m;
   });
 
+  const updateLayout = () => {
+    const viewport = document.documentElement.clientHeight;
+    cards.forEach((card) => {
+      const top = parseFloat(getComputedStyle(card).scrollMarginTop) || 104;
+      // A sticky card taller than the available space would hide its own footer.
+      card.classList.toggle('svc--flow', card.offsetHeight + top + 32 > viewport);
+    });
+  };
+  updateLayout();
+  const observer = new ResizeObserver(updateLayout);
+  cards.forEach((card) => observer.observe(card));
+  addEventListener('resize', updateLayout);
+  ScrollTrigger.addEventListener('refreshInit', updateLayout);
+
   cards.forEach((card, i) => {
     gsap.fromTo(
       card.querySelector('video'),
       { yPercent: -5 },
       { yPercent: 5, ease: 'none', scrollTrigger: { trigger: markers[i], start: 'top bottom', end: 'top top', scrub: true } },
     );
-
-    const next = cards[i + 1];
-    if (!next) return;
-    gsap.to(card, {
-      scale: 0.92,
-      filter: 'brightness(0.4)',
-      ease: 'none',
-      scrollTrigger: {
-        trigger: markers[i + 1],
-        start: 'top bottom',
-        end: () => `top ${parseFloat(getComputedStyle(next).top) || 0}px`,
-        scrub: true,
-        invalidateOnRefresh: true,
-      },
-    });
   });
 }
 

@@ -14,8 +14,8 @@ export function initNav(lenis) {
       if (target === null) return;
       e.preventDefault();
       setMenu(false);
-      if (lenis) lenis.scrollTo(target, { offset: 0, duration: 1.8 });
-      else (target === 0 ? document.body : target).scrollIntoView({ behavior: 'smooth' });
+      if (lenis) lenis.scrollTo(target, { offset: 0, duration: 0.9 });
+      else (target === 0 ? document.body : target).scrollIntoView({ behavior: 'instant' });
     });
   });
 
@@ -55,24 +55,4 @@ export function initNav(lenis) {
   }
   burger.addEventListener('click', () => setMenu(!root.classList.contains('menu-open')));
   addEventListener('keydown', (e) => e.key === 'Escape' && setMenu(false));
-}
-
-export function initCopy() {
-  document.querySelectorAll('[data-copy]').forEach((btn) => {
-    const state = btn.querySelector('.copy__state');
-    btn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(btn.dataset.copy);
-        btn.classList.add('is-copied');
-        state.textContent = 'Kopiert ✓';
-      } catch {
-        location.href = `mailto:${btn.dataset.copy}`;
-        return;
-      }
-      setTimeout(() => {
-        btn.classList.remove('is-copied');
-        state.textContent = state.dataset.label;
-      }, 2200);
-    });
-  });
 }

@@ -2,6 +2,8 @@ import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
 
 export default defineConfig({
+  server: { proxy: { '/api/contact': { target: 'http://127.0.0.1:8787' } } },
+  preview: { proxy: { '/api/contact': { target: 'http://127.0.0.1:8787' } } },
   build: {
     target: 'es2022',
     rollupOptions: {

@@ -1,0 +1,22 @@
+[Unit]
+Description=Lucent Solutions contact form
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+# Replace with the existing VPS_APP_DIR, outside the public webroot.
+WorkingDirectory=/opt/lucent-solutions
+EnvironmentFile=/etc/lucent-contact.env
+ExecStart=/usr/bin/node server/contact.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

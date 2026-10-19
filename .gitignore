@@ -1,4 +1,8 @@
 node_modules
+.tmp/
+.env
+.env.*
+!.env.example
 dist
 *.log
 # raw Higgsfield renders (~57 MB) stay local; web-ready versions are in public/media

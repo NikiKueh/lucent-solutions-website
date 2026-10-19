@@ -39,4 +39,10 @@ chown -R www-data:www-data "$TARGET_DIR"
 find "$TARGET_DIR" -type d -exec chmod 755 {} \;
 find "$TARGET_DIR" -type f -exec chmod 644 {} \;
 
+# The optional mail API is configured once on the VPS; static-only deploys still work.
+if command -v systemctl >/dev/null 2>&1 && systemctl is-active --quiet lucent-contact.service; then
+  (cd "$ROOT_DIR" && npm ci --omit=dev --ignore-scripts)
+  systemctl restart lucent-contact.service
+fi
+
 echo "Deployed $commit_sha to $TARGET_DIR at $deployed_at"

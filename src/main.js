@@ -11,11 +11,13 @@ import Lenis from 'lenis';
 import { ParticleField } from './webgl/particles.js';
 import { initCursor, initMagnetic, initSpotlight, initScrambleHover } from './fx/pointer.js';
 import { initVideos, loadVideo, canPlay } from './fx/videos.js';
-import { runPreloader, heroIntro, initHeroDetails } from './sections/intro.js';
+import { runPreloader, heroIntro } from './sections/intro.js';
 import { initWarp } from './sections/warp.js';
 import { initTerminal } from './sections/terminal.js';
 import { initScroll } from './sections/scroll.js';
-import { initNav, initCopy } from './sections/nav.js';
+import { initNav } from './sections/nav.js';
+import { initContact } from './sections/contact.js';
+import { initSnap } from './sections/snap.js';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -27,8 +29,14 @@ scrollTo(0, 0);
 async function boot() {
   /* Smooth scroll, driven by GSAP's ticker so ScrollTrigger stays in sync */
   let lenis = null;
+  let filterScroll;
   if (!reduced) {
-    lenis = new Lenis({ lerp: 0.085, smoothWheel: true });
+    lenis = new Lenis({
+      lerp: 0.12,
+      smoothWheel: true,
+      allowNestedScroll: true,
+      virtualScroll: (data) => filterScroll?.(data),
+    });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -51,8 +59,7 @@ async function boot() {
   initMagnetic();
   initSpotlight();
   initScrambleHover();
-  initHeroDetails();
-  initCopy();
+  initContact();
 
   await runPreloader(Promise.all([document.fonts.ready, reduced ? null : canPlay(heroVideo)]), { reduced });
 
@@ -61,13 +68,16 @@ async function boot() {
   heroVideo.play?.().catch(() => {});
 
   heroIntro({ particles, reduced });
-  initNav(lenis);
   initVideos({ reduced });
   initScroll({ lenis, particles, reduced });
   initTerminal({ reduced });
   await initWarp({ reduced });
 
   ScrollTrigger.refresh();
+  const snap = initSnap({ lenis });
+  filterScroll = snap.virtualScroll;
+  ScrollTrigger.addEventListener('refresh', snap.refresh);
+  initNav(lenis);
 }
 
 boot();
