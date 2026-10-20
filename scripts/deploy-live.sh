@@ -35,14 +35,21 @@ source_dir: $SOURCE_DIR
 target_dir: $TARGET_DIR
 EOF
 
-chown -R www-data:www-data "$TARGET_DIR"
+# A dedicated deploy user owns its webroot; only root may change ownership.
+if [ "$(id -u)" -eq 0 ]; then
+  chown -R www-data:www-data "$TARGET_DIR"
+fi
 find "$TARGET_DIR" -type d -exec chmod 755 {} \;
 find "$TARGET_DIR" -type f -exec chmod 644 {} \;
 
 # The optional mail API is configured once on the VPS; static-only deploys still work.
 if command -v systemctl >/dev/null 2>&1 && systemctl is-active --quiet lucent-contact.service; then
   (cd "$ROOT_DIR" && npm ci --omit=dev --ignore-scripts)
-  systemctl restart lucent-contact.service
+  if [ "$(id -u)" -eq 0 ]; then
+    systemctl restart lucent-contact.service
+  else
+    sudo -n systemctl restart lucent-contact.service
+  fi
 fi
 
 echo "Deployed $commit_sha to $TARGET_DIR at $deployed_at"

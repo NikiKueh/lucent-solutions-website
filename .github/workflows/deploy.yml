@@ -16,6 +16,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate deployment configuration
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_APP_DIR: ${{ secrets.VPS_APP_DIR }}
+          VPS_DEPLOY_DIR: ${{ secrets.VPS_DEPLOY_DIR }}
+        run: |
+          missing=0
+          for name in VPS_HOST VPS_USER VPS_SSH_KEY VPS_APP_DIR VPS_DEPLOY_DIR; do
+            if [ -z "${!name}" ]; then
+              echo "::error title=Missing deployment secret::Configure repository secret $name in Settings > Secrets and variables > Actions."
+              missing=1
+            fi
+          done
+          exit "$missing"
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -29,12 +46,21 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Test application and unprivileged deployment
+        run: |
+          npm test
+          bash scripts/deploy-live.test.sh
+
       - name: Prepare SSH key
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_ed25519 > /dev/null
+          ssh-keyscan -T 15 -H "$VPS_HOST" >> ~/.ssh/known_hosts
 
       - name: Sync repository and build to VPS
         run: |
@@ -51,3 +77,9 @@ jobs:
         run: |
           ssh "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
             "cd '${{ secrets.VPS_APP_DIR }}' && chmod +x scripts/deploy-live.sh && TARGET_DIR='${{ secrets.VPS_DEPLOY_DIR }}' COMMIT_SHA='${{ github.sha }}' ./scripts/deploy-live.sh"
+
+      - name: Verify live commit
+        run: |
+          curl --fail --silent --show-error --retry 3 --max-time 30 \
+            "https://lucent-solutions.tech/BUILD_INFO.txt?deploy=$GITHUB_SHA" \
+            | grep --line-regexp --fixed-strings "commit: ${GITHUB_SHA:0:7}"

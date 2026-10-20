@@ -50,6 +50,14 @@ synchronisiert das Repo samt `dist/` per rsync auf den VPS und führt dort `scri
 `dist/` in den Webroot von lucent-solutions.tech spiegelt.
 
 Benötigte Repository-Secrets: `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`, `VPS_APP_DIR`, `VPS_DEPLOY_DIR`.
+Diese unter **Settings → Secrets and variables → Actions → Repository secrets** hinterlegen;
+`VPS_SSH_KEY` enthält den vollständigen privaten SSH-Schlüssel eines auf dem VPS zugelassenen Deploy-Zugangs.
+Für CI einen eigenen Benutzer ohne Root-Rechte verwenden, der nur sein App-Verzeichnis und den
+Lucent-Webroot besitzt. Für einen bereits aktiven Kontakt-Dienst benötigt dieser Benutzer zusätzlich
+die gezielte Berechtigung `sudo -n systemctl restart lucent-contact.service`.
+Die Pipeline prüft fehlende Secrets vor dem Build und gleicht nach der Auslieferung den öffentlich
+erreichbaren Commit in `BUILD_INFO.txt` mit dem ausgelieferten Commit ab. Einen fehlgeschlagenen Lauf
+nach Korrektur der Secrets über **Re-run failed jobs** erneut starten.
 
 Manuell auf dem VPS: `npm ci && npm run build && ./scripts/deploy-live.sh` (optional `TARGET_DIR=/var/www/lucent`).
 
