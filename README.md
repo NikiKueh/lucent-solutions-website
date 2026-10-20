@@ -56,8 +56,13 @@ Für CI einen eigenen Benutzer ohne Root-Rechte verwenden, der nur sein App-Verz
 Lucent-Webroot besitzt. Für einen bereits aktiven Kontakt-Dienst benötigt dieser Benutzer zusätzlich
 die gezielte Berechtigung `sudo -n systemctl restart lucent-contact.service`.
 Die Pipeline prüft fehlende Secrets vor dem Build und gleicht nach der Auslieferung den öffentlich
-erreichbaren Commit in `BUILD_INFO.txt` mit dem ausgelieferten Commit ab. Einen fehlgeschlagenen Lauf
-nach Korrektur der Secrets über **Re-run failed jobs** erneut starten.
+erreichbaren Commit in `BUILD_INFO.txt` sowie den HTML-Inhalt beider Domain-Varianten mit dem Build ab.
+Einen fehlgeschlagenen Lauf nach Korrektur der Secrets über **Re-run failed jobs** erneut starten.
+
+Einmalig `deploy/cache.nginx.conf` als `/etc/nginx/snippets/lucent-cache.conf` installieren und im
+bestehenden HTTPS-Serverblock `include /etc/nginx/snippets/lucent-cache.conf;` ergänzen. Mit `nginx -t`
+prüfen und Nginx neu laden. HTML wird bei erneutem Laden revalidiert; Dateinamen mit Build-Hash
+behalten ihren Asset-Cache. Bereits geöffnete Tabs müssen nach einem Deployment neu geladen werden.
 
 Manuell auf dem VPS: `npm ci && npm run build && ./scripts/deploy-live.sh` (optional `TARGET_DIR=/var/www/lucent`).
 

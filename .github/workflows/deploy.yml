@@ -78,8 +78,14 @@ jobs:
           ssh "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
             "cd '${{ secrets.VPS_APP_DIR }}' && chmod +x scripts/deploy-live.sh && TARGET_DIR='${{ secrets.VPS_DEPLOY_DIR }}' COMMIT_SHA='${{ github.sha }}' ./scripts/deploy-live.sh"
 
-      - name: Verify live commit
+      - name: Verify live commit and HTML
         run: |
           curl --fail --silent --show-error --retry 3 --max-time 30 \
             "https://lucent-solutions.tech/BUILD_INFO.txt?deploy=$GITHUB_SHA" \
             | grep --line-regexp --fixed-strings "commit: ${GITHUB_SHA:0:7}"
+          for origin in https://lucent-solutions.tech https://www.lucent-solutions.tech; do
+            curl --fail --silent --show-error --retry 3 --max-time 30 \
+              --dump-header /tmp/lucent-live-headers "$origin/" \
+              | cmp - dist/index.html
+            grep --ignore-case --extended-regexp '^cache-control:.*no-cache' /tmp/lucent-live-headers
+          done
